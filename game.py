@@ -7,7 +7,9 @@ def play():
     clear_console()
     welcome()
 
-    [tip, secret_word] = random_word()
+    difficulty = choose_difficulty()
+
+    [tip, secret_word] = random_word(difficulty)
     correct_letters = ["_" for letter in secret_word]
     letters_used = []
     hanged = False
@@ -52,12 +54,25 @@ def clear_console():
     os.system("cls" if os.name == "nt" else "clear")
 
 
+def choose_difficulty():
+    input_difficulty = int(
+        input(
+            "Qual nível de dificuldade?\n\n(1) Fácil\n(2) Médio\n(3) Difícil\n\nEscolha: "
+        )
+    )
+    print()
+    input_difficulty = 4 if input_difficulty > 3 else input_difficulty
+
+    difficulties = ["easy_words", "medium_words", "hard_words", "words"]
+    return difficulties[input_difficulty - 1]
+
+
 def remove_accents(palavra):
     return normalize("NFKD", palavra).encode("ASCII", "ignore").decode("ASCII")
 
 
 def random_word(file_name="words"):
-    with open(f"./{file_name}.txt", "r") as arquivo:
+    with open(f"./words/{file_name}.txt", "r") as arquivo:
         lines = arquivo.readlines()
         arquivo.close()
         lista_palavras = [list(line.split()) for line in lines]
@@ -187,7 +202,7 @@ def draw_hangman(errors, letters_used):
         print(" |            ")
         print("_|___         ")
         print()
-        print("  ".join(letters_used))
+        print("  ".join(letters_used) + "\n")
 
 
 if __name__ == "__main__":
