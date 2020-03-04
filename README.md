@@ -1,1 +1,1 @@
-# hangman-game
+# Hangman game / Jogo da Forca
